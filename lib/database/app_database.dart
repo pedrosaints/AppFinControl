@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'dao/contact_dao.dart';
+import 'dao/month_dao.dart';
 
 Future<Database> getDatabase() async {
   final String path = join(await getDatabasesPath(), 'fincontrol_months.db');
@@ -9,7 +9,7 @@ Future<Database> getDatabase() async {
       db.execute(MonthDao.tableSql);
     },
     version: 1,
-    onDowngrade: onDatabaseDowngradeDelete,
+    //onDowngrade: onDatabaseDowngradeDelete,
   );
 }
 
