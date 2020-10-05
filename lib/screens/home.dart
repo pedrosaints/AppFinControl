@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:FinControl/screens/transactions_list.dart';
+import 'package:FinControl/components/transaction_auth_dialog.dart';
+import 'package:FinControl/components/response_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'month_list.dart';
@@ -69,7 +70,21 @@ class Home extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.6,
                   ),
                   InkWell(
-                    onTap: () => _showContactsList(context),
+                    onTap: () {
+                      showDialog(context: context, builder: (contextDialog) {
+                      return TransactionAuthDialog(
+                      onConfirm: (String password) {
+                        if (password == "7220") {
+                          _showContactsList(context);
+                        }
+                        else {
+                          _showFailureMessage(context);
+                        }
+                        _showContactsList(context);
+                      },);
+                      });
+                    },
+
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.6,
                       decoration: BoxDecoration(
@@ -103,12 +118,14 @@ void _showContactsList(BuildContext context) {
   );
 }
 
-void _showTransactionsList(BuildContext context) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => TransactionsList(),
-    ),
-  );
+
+
+void _showFailureMessage(BuildContext context, {String message = 'Senha Incorreta'}) {
+  showDialog(
+      context: context,
+      builder: (contextDialog) {
+        return FailureDialog(message);
+      });
 }
 
 class _FeatureItem extends StatelessWidget {

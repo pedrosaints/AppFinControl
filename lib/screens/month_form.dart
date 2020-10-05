@@ -2,13 +2,13 @@ import 'package:FinControl/database/dao/month_dao.dart';
 import 'package:FinControl/models/contact.dart';
 import 'package:flutter/material.dart';
 
-class ContactForm extends StatefulWidget {
+class MonthForm extends StatefulWidget {
 
   @override
-  _ContactFormState createState() => _ContactFormState();
+  _MonthFormState createState() => _MonthFormState();
 }
 
-class _ContactFormState extends State<ContactForm> {
+class _MonthFormState extends State<MonthForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _accountNumberController = TextEditingController();
   final MonthDao _dao = MonthDao();
@@ -17,7 +17,7 @@ class _ContactFormState extends State<ContactForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New contact'),
+        title: Text('Novo mês'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -26,7 +26,7 @@ class _ContactFormState extends State<ContactForm> {
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                labelText: 'Full name',
+                labelText: 'Mês',
               ),
               style: TextStyle(fontSize: 24.0),
               keyboardType: TextInputType.number,
@@ -36,7 +36,7 @@ class _ContactFormState extends State<ContactForm> {
               child: TextField(
                 controller: _accountNumberController,
                 decoration: InputDecoration(
-                  labelText: 'Account number',
+                  labelText: 'Salário',
                 ),
                 style: TextStyle(fontSize: 24.0),
                 keyboardType: TextInputType.number,
@@ -47,7 +47,7 @@ class _ContactFormState extends State<ContactForm> {
               child: SizedBox(
                 width: double.maxFinite,
                 child: RaisedButton(
-                  child: Text('Create'),
+                  child: Text('Criar'),
                   onPressed: () {
                     setState(() {
                       final String name = _nameController.text;

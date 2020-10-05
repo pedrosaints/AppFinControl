@@ -1,27 +1,33 @@
 import 'package:FinControl/components/progress.dart';
+import 'package:FinControl/database/dao/money_dao.dart';
 import 'package:FinControl/database/dao/month_dao.dart';
 import 'package:FinControl/models/contact.dart';
-import 'package:FinControl/screens/money_list.dart';
+import 'package:FinControl/models/transaction.dart';
+import 'package:FinControl/screens/transaction_form.dart';
 import 'package:flutter/material.dart';
 
 import 'month_form.dart';
 
-class MonthList extends StatefulWidget {
+class MoneyList extends StatefulWidget {
+  final Month month;
+
+  MoneyList(this.month);
+
   @override
-  _MonthListState createState() => _MonthListState();
+  _MoneyListState createState() => _MoneyListState();
 }
 
-class _MonthListState extends State<MonthList> {
+class _MoneyListState extends State<MoneyList> {
 
-  final MonthDao _dao = MonthDao();
+  final MoneyDao _dao = MoneyDao();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meses'),
+        title: Text(widget.month.name),
       ),
-      body: FutureBuilder<List<Month>>(
+      body: FutureBuilder<List<Transaction>>(
         initialData: List(),
         future: _dao.findAll(),
         builder: (context, snapshot) {
@@ -41,15 +47,12 @@ class _MonthListState extends State<MonthList> {
             case ConnectionState.done:
               // TODO: Handle this case.
               print(snapshot.data);
-              final List<Month> contacts = snapshot.data;
+              final List<Transaction> contacts = snapshot.data;
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final Month contact = contacts[index];
-                  return _MonthItem(
+                  final Transaction contact = contacts[index];
+                  return _MoneyItem(
                     contact,
-                    onClick: () {
-                      _showTransactionForm(context,contact);
-                    },
                   );
                 },
                 itemCount: contacts.length,
@@ -66,7 +69,7 @@ class _MonthListState extends State<MonthList> {
           Navigator.of(context)
               .push(
             MaterialPageRoute(
-              builder: (context) => MonthForm(),
+              builder: (context) => TransactionForm(),
             ),
           )
               .then((value) => {setState(() {})});
@@ -78,39 +81,29 @@ class _MonthListState extends State<MonthList> {
 }
 
 
-void _showTransactionForm(BuildContext context, Month month) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => MoneyList(month),
-    ),
-  );
-}
 
+class _MoneyItem extends StatelessWidget {
 
-class _MonthItem extends StatelessWidget {
+  final Transaction t;
+  //final Function onClick;
 
-  final Month month;
-  final Function onClick;
-
-  _MonthItem(
-      this.month, {
-        @required this.onClick,
-      });
+  _MoneyItem(
+      this.t);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        onTap: () => onClick(),
+        //onTap: () => onClick(),
         title: Text(
-          month.name,
+          t.value.toString(),
           style: TextStyle(fontSize: 24.0,),
         ),
         //tenho o salario armazenado
-        /*subtitle: Text(
-          month.salario.toString(),
+        subtitle: Text(
+          t.type,
           style: TextStyle(fontSize: 16.0,),
-        ),*/
+        ),
       ),
     );
   }
